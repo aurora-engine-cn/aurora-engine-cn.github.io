@@ -1,7 +1,7 @@
 export default {
     description: 'Just playing around.',
     lang: 'cn-ZH',
-    base:'docs/.vitepress/dist/',
+    base:'/',
     markdown: {
         lineNumbers: true,
     },
