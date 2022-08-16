@@ -1,0 +1,52 @@
+# 更新日志
+
+## 2022-7-13 (tag v1.0.1)
+更新 `Aurora` golang 最低支持版本兼容致 go1.16 ，版本号请切换到 v0.5.0.1
+
+## 2022-7-15 (tag v1.0.2)
+### 新功能
+- 新增系统处理器参数注册
+  示例:
+```go
+type Ccc struct {
+	Name string
+}
+func TestAurora(t *testing.T) {
+	a := aurora.NewAurora()
+	/// 注册一个系统变量，类型为 *Ccc
+	a.SysVariable(&Ccc{}, func(proxy *aurora.Proxy) interface{} {
+	    // 更具使用情况 对变量进行初始化并且返回
+		c := &Ccc{"test"}
+		return c
+	})
+	// 执行处理 ccc 是通过自定义的方式初始化好的
+	a.Get("/", func(ccc *Ccc, req *http.Request) {
+		fmt.Println(ccc)
+	})
+	aurora.Run(a)
+} 
+```
+
+- 结构体控制器的初始化时机变更到 ioc 初始化期间
+- ioc 初始化期间支持类型匹配注入，未找到对应匹配类型不做任何处理
+- ioc 初始化对组件属性已存在赋值的项不在进行初始化注入
+
+### bug 修复
+- 系统变量， `*http.Request` , `http.ResponseWritre` , `aurora.Ctx` , `*aurora.MultipartFile` 初始化为空
+
+## 2022-7-18 (tag v1.0.3)
+添加系统参数的类型校验检查，修复 错误捕捉的类型判断
+
+## 2022-7-20 (tag v1.0.4)
+更新 中间件处理跨域失效问题，修复添加系统变量导致 文件上传的变量初始化失败问题
+
+## 2022-7-24 (tag v1.0.5)
+更新 `Aurora` 对文件服务器的访问支持
+
+## 2022-8-14 (tag v1.0.6)
+此版本更新较大，调整了整体项目开发的结构，与 v1.x.x 版本完全不兼容。一下是在本此更新中做出的改动(非改动部分保持不变)，详细说明请参考文档内容
+
+- 更改项目启动参数的接口集，更改之后无法直接通过 `*aurora.Aaurora` 实例来直接启动服务，而是应该嵌套 `*aurora.Aaurora` 并且去实现额外的接口
+- 删除了结构体注册器，通过解析结构体绑定的函数进行注册结构API被废除
+- 新增了控制器注册的构造器类型，通过构造器向ioc容器中注册并使用
+
