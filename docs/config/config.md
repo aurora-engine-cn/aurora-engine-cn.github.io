@@ -28,7 +28,7 @@ type Config interface {
 使用自定义 `viper` 替换默认的配置
 ```go{7}
 cnf := viper.New()
-cnf.SetConfigFile("X:\\xx\\xx\\xx\\xx\\xx.yml")
+cnf.SetConfigFile("X:\\xc\\xx\\xx\\xx\\xx.yml")
 err := cnf.ReadInConfig()
 if err != nil {
 	a.Panic(err)
