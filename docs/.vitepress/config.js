@@ -1,6 +1,7 @@
 export default {
     description: 'Just playing around.',
     lang: 'cn-ZH',
+    base:'https://go-aurora-engine.github.io/',
     markdown: {
         lineNumbers: true,
     },
