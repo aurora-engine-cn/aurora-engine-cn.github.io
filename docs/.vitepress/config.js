@@ -1,5 +1,5 @@
 export default {
-
+    title: 'Aurora',
     description: 'Just playing around.',
     lang: 'cn-ZH',
     markdown: {
