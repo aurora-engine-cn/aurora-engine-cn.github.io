@@ -1,0 +1,1 @@
+import{_ as s,c as a,o as n,a as o}from"./app.1355c4cf.js";const F=JSON.parse('{"title":"\u8DEF\u7531\u5206\u7EC4","description":"","frontmatter":{},"headers":[],"relativePath":"router/group.md"}'),p={name:"router/group.md"},l=o("",3),e=[l];function r(t,c,D,A,d,y){return n(),a("div",null,e)}var i=s(p,[["render",r]]);export{F as __pageData,i as default};
