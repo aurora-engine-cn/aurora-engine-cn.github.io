@@ -12,7 +12,7 @@ import "gitee.com/aurora-engine/aurora"
 
 ## 创建服务器
 创建一个结构体，嵌套一个 `*aurora.Engine` 实例。
-### Serve
+### 第一步 创建Serve
 ```go
 // Server 嵌套Aurora定义一个服务 实例
 type Server struct {
@@ -30,6 +30,8 @@ type Application interface {
 	run() error
 }
 ```
+
+### 第二步 创建实现接口
 开始实现接口, `Server()` 函数仅用于加载服务运行期间的依赖组件，`Router()` 函数则负责定义服务的路由部分，他们在某些特定的情况下需要严格区分。
 下面的实现中在 `Router()` 中定义了一个 `Get` 请求，请求路径为 `/`。
 ```go
@@ -48,7 +50,7 @@ func (server *Server) Router() {
 }
 ```
 
-## 启动服务器
+### 第三步 启动服务器
 ```go
 func main(){
     err := aurora.Run(&Server{aurora.New(aurora.Debug())})
