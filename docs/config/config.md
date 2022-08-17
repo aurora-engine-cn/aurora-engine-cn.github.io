@@ -35,3 +35,47 @@ if err != nil {
 }
 a.Use(cnf)
 ```
+
+## 服务端口配置
+`aurora` 仅支持通过配置文件方式更改运行端口号
+```yaml{3}
+aurora:
+  server:
+    port: 2021
+```
+
+## 开启TLS
+如需开启 http2 通过指定tls配置项设定相关证书和私钥路径
+```yaml{5,6}
+aurora:
+  server:
+    # *tls 配置
+    tls:
+      certFile: cafile\rootCert.pem
+      keyFile: cafile\rootKey.pem
+```
+## 静态资源
+```yaml{3}
+aurora:
+  # *静态资源根路径
+  resource: static
+```
+## 文件服务器
+```yaml{4}
+aurora:
+  server:
+    # 文件服务接口
+    file: /resource
+```
+
+## 配置服务信息
+```yaml{4,6}
+aurora:
+  server:
+    # 服务名
+    name: community
+    # *主机地址信息 
+    host: 127.0.0.1
+```
+
+## 更多...
