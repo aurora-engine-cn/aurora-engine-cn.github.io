@@ -5,6 +5,11 @@
 本教程也假设您有一定的编程基础，能够大致明白GO语言代码的意思，如果您在阅读Go代码方面遇见问题，可以访问 [golang](https://golang.google.cn/)。
 :::
 
+## Go 版本
+```text
+go1.19
+```
+
 ## 导入依赖
 ```go
 import "gitee.com/aurora-engine/aurora"
@@ -14,13 +19,13 @@ import "gitee.com/aurora-engine/aurora"
 创建一个结构体，嵌套一个 `*aurora.Engine` 实例。
 ### 第一步 创建Serve
 ```go
-// Server 嵌套Aurora定义一个服务 实例
+// Server 嵌套Engine定义一个服务 实例
 type Server struct {
     *aurora.Engine
 }
 ```
 
-实现 `aurora.Application` 接口中的两个方法, 接口定义如下,除了`Server()` 和 `Router()` 其他方法均由 `*aurora.Aurora` 实现了
+实现 `aurora.Application` 接口中的两个方法, 接口定义如下,除了`Server()` 和 `Router()` 其他方法均由 `*aurora.Engine` 实现了
 ```go
 type Application interface {
 	Use(...interface{})
