@@ -19,7 +19,7 @@ export default {
         nav:[
             {text:"指南",link:"/introduce/aurora"},
             {
-                text:"v1.1.1",
+                text:"v1.1.2",
                 items:[
                     {text:"更新日志",link:"/update/update"}
                 ],
