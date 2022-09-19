@@ -12,6 +12,6 @@ hero:
           text: 开始
           link: /introduce/aurora
         - theme: alt
-          text: 码云
+          text: gitee
           link: https://gitee.com/aurora-engine/aurora
 ---

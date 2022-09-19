@@ -6,7 +6,9 @@ export default {
         lineNumbers: true,
     },
     themeConfig: {
-        siteTitle: 'Aurora',
+        siteTitle: false,
+
+        logo: 'https://img-1252940994.cos.ap-nanjing.myqcloud.com/logo.png',
         socialLinks: [
             {
                 icon: {
@@ -19,7 +21,7 @@ export default {
         nav:[
             {text:"指南",link:"/introduce/aurora"},
             {
-                text:"v1.1.2",
+                text:"v1.2.1",
                 items:[
                     {text:"更新日志",link:"/update/update"}
                 ],
@@ -71,6 +73,32 @@ export default {
                     { text: '依赖管理', link: '/component/dep' },
                     { text: 'Ioc生命周期', link: '/component/ioc' },
                     { text: '结构体接口', link: '/component/controller' },
+                ]
+            },
+            {
+                text: 'ORM',
+                collapsible: true,
+                items: [
+                    { text: 'ORM', link: '/orm/orm' },
+                ]
+            },
+            {
+                text: 'Packages',
+                collapsible: true,
+                items: [
+                    { text: 'Packages', link: '/pkgs/pkgs' },
+                ]
+            },
+            {
+                text: 'utils',
+                collapsible: true,
+                items: [
+                    { text: 'sliceutils', link: '/utils/sliceutils' },
+                    { text: 'maputils', link: '/utils/maputils' },
+                    { text: 'stringutils', link: '/utils/stringutils' },
+                    { text: 'timeutils', link: '/utils/timeutils' },
+                    { text: 'uuidutils', link: '/utils/uuidutils' },
+                    { text: 'jsonutils', link: '/utils/jsonutils' },
                 ]
             },
             {
