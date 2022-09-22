@@ -177,5 +177,5 @@ server.Post("/test", func(args args maps.Map[string, A[int]]) string {
   "12":{"value":2}
 }
 ```
-## 不支持的情况
-`aurora` 现阶段仅支持 `type ArrayList[T any] []T` , `type Map[K comparable, V any]` 类型的泛型定义可以直接解析接收json数组和键值定义。
+## 当前泛型支持情况
+`aurora` 现阶段仅支持 大部分自定义的泛型，需要正常解析就需要字段导出。对于第三方库的自定义数据类型需要 `aurora` 手动库进行适配。
