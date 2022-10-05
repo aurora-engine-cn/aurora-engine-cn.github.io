@@ -1,12 +1,12 @@
 # 路由中间件
 中间件是一个固定的函数签名，日后也许会有所调整，函数通过返回一个 `bool` 来判断是否执行下一个中间件。
 ```go
-type Middleware func(Ctx) bool
+type Middleware func(Context) bool
 ```
 ## 定义中间件
 ```go
-func Before() aurora.Middleware {
-	return func(ctx aurora.Ctx) bool {
+func Before() web.Middleware {
+	return func(ctx web.Context) bool {
 		fmt.Println("before")
 		return true
 	}
@@ -21,4 +21,4 @@ func Before() aurora.Middleware {
 a.Get("/", func() {}, Before())
 ```
 ## 中间件处理中断
-某个中间件如果逻辑处理失败，我们需要正常的对客户端做出响应，通过 `aurora.Ctx` 的 `func (c Ctx) Return(value ...interface{})` 来完成。
+某个中间件如果逻辑处理失败，我们需要正常的对客户端做出响应，通过 `web.Context` 的 `func (c Context) Return(value ...any)` 来完成。

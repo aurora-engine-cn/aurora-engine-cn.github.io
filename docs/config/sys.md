@@ -6,8 +6,8 @@
 |:-|:-|:-|
 |*http.Request|原生http请求体|是|
 |http.ResponseWritre|原生http响应体|是|
-|aurora.Ctx|aurora中间件上下文参数|是|
-|*aurora.MultipartFile|Post请求解析文件参数|是|
+|web.Context|aurora中间件上下文参数|是|
+|*web.MultipartFile|Post请求解析文件参数|是|
 
 ## 使用示例
 系统变量的使用方式，在处理器的函数参数列表的任意位置使用即可，参数的类型要严格匹配
@@ -19,11 +19,11 @@ a.Get("/", func(rew http.ResponseWritre) {
 		
 })
 
-a.Get("/", func(ctx aurora.Ctx) {
+a.Get("/", func(ctx ctx Context) {
 		
 })
 
-a.Post("/", func(file *aurora.MultipartFile) {
+a.Post("/", func(file *web.MultipartFile) {
 		
 })
 
@@ -36,7 +36,7 @@ type Ccc struct {
 	Name string
 }
 /// 注册一个系统变量，类型为 *Ccc
-a.SysVariable(&Ccc{}, func(proxy *aurora.Proxy) interface{} {
+a.Variate(&Ccc{}, func(ctx Context) any {
 	// 更具使用情况 对变量进行初始化并且返回
 	c := &Ccc{"test"}
 	return c

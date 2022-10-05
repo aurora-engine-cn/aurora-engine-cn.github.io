@@ -7,9 +7,9 @@
 ### 默认配置文件
 `aurora` 会加载项目跟目录下的`application.yml`配置文件，存在多个同名的配置文件加载顺序会优先查找最外层的配置。
 ### 读取配置文件
-通过 `func (*Aurora) GetConfig() Config` 提供对配置的访问
+通过 `func (*Engine) GetConfig() Config` 提供对配置的访问
 ### 自定义配置文件
-实现 `aurora.Config` 接口，该接口是对 `viper` 中的一个抽取，以便用户自定义对 `viper` 中的功能进行扩展。
+实现 `web.Config` 接口，该接口是对 `viper` 中的一个抽取，以便用户自定义对 `viper` 中的功能进行扩展。
 ```go
 type Config interface {
 	SetConfigFile(string)

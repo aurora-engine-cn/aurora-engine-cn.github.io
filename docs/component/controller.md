@@ -1,9 +1,9 @@
-q# 结构体控制器
+# 结构体控制器
 结构体控制器，在有项目依赖的情况下主要配合Ioc来使用会非常便捷，结构体控制器需要将指定的结构体类型提前初始化到 Ioc中。
 ## 结构体方法注册
 当前的结构体注册方式，首先定义一个结构体，提供一个结构体构造器，构造器类型如下所示，一个返回 接口的函数
 ```go
-type Constructors func() interface{}
+type Constructor func() any
 ```
 定义结构体
 ```go
@@ -11,8 +11,8 @@ type Index struct {
 	
 }
 // 定义一个 构造器
-func NewIndex() aurora.Constructors {
-	return func() interface{} {
+func NewIndex() web.Constructor {
+	return func() any {
 		return new(Index)
 	}
 }

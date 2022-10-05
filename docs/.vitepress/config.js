@@ -21,7 +21,7 @@ export default {
         nav:[
             {text:"指南",link:"/introduce/aurora"},
             {
-                text:"v1.2.2",
+                text:"v1.3.1",
                 items:[
                     {text:"更新日志",link:"/update/update"}
                 ],
@@ -71,7 +71,7 @@ export default {
                 collapsible: true,
                 items: [
                     { text: '依赖管理', link: '/component/dep' },
-                    { text: 'Ioc生命周期', link: '/component/ioc' },
+                    { text: '容器生命周期', link: '/component/ioc' },
                     { text: '结构体接口', link: '/component/controller' },
                 ]
             },

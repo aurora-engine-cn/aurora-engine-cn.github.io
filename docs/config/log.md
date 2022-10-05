@@ -1,6 +1,6 @@
 # 日志
 ## 自定义日志替换
-`aurora.Log`日志接口
+`web.Log`日志接口
 ```go
 type Log interface {
 	Info(...interface{})

@@ -26,7 +26,7 @@ a.Use(new(Xxx))
 ```go
 
 // 通过命名方式注册了 3个组件
-	a.Use(aurora.Component{
+	a.Use(web.Component{
 		"a": &Aaa{Name: "Aaa"},
 		"b": &Bbb{Name: "Bbb"},
 		"c": &Ccc{Name: "Caa"},
