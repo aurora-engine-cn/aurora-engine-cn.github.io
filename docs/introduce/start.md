@@ -25,19 +25,8 @@ type Server struct {
 }
 ```
 
-实现 `aurora.Application` 接口中的两个方法, 接口定义如下,除了`Server()` 和 `Router()` 其他方法均由 `*aurora.Engine` 实现了
-```go
-type Application interface {
-	Use(...interface{})
-	Server()
-	ioc()
-    Router()
-	run() error
-}
-```
-
 ### 第二步 创建实现接口
-开始实现接口, `Server()` 函数仅用于加载服务运行期间的依赖组件，`Router()` 函数则负责定义服务的路由部分，他们在某些特定的情况下需要严格区分。
+开始实现 `aurora.Application` 接口中的两个方法,`Server()` 和 `Router()`, `Server()` 函数仅用于加载服务运行期间的依赖组件，`Router()` 函数则负责定义服务的路由部分，他们在某些特定的情况下需要严格区分。
 下面的实现中在 `Router()` 中定义了一个 `Get` 请求，请求路径为 `/`。
 ```go
 func (server *Server) Server() {
