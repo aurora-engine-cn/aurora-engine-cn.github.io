@@ -21,7 +21,7 @@ export default {
         nav:[
             {text:"指南",link:"/introduce/aurora"},
             {
-                text:"v1.3.1",
+                text:"v1.3.3",
                 items:[
                     {text:"更新日志",link:"/update/update"}
                 ],
@@ -47,6 +47,7 @@ export default {
                     { text: 'Post 请求', link: '/router/post' },
                     { text: 'Group 分组', link: '/router/group' },
                     { text:'中间件',link:'/router/middleware'},
+                    { text: '数据响应', link: '/router/response'},
                     { text: 'File 上传', link: '/router/file'},
                 ]
             },
