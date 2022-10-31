@@ -46,7 +46,8 @@ export default {
                     { text: 'Get 请求', link: '/router/get' },
                     { text: 'Post 请求', link: '/router/post' },
                     { text: 'Group 分组', link: '/router/group' },
-                    { text:'中间件',link:'/router/middleware'},
+                    { text: '中间件',link:'/router/middleware'},
+                    { text: '参数验证器', link: '/router/constraint'},
                     { text: '数据响应', link: '/router/response'},
                     { text: 'File 上传', link: '/router/file'},
                 ]
