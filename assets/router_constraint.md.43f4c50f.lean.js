@@ -1,0 +1,1 @@
+import{_ as t,c as e,o as a,a as r}from"./app.0955ae3e.js";const g=JSON.parse('{"title":"\u53C2\u6570\u9A8C\u8BC1\u5668","description":"","frontmatter":{},"headers":[],"relativePath":"router/constraint.md"}'),l={name:"router/constraint.md"},d=r("",3),n=[d];function o(s,i,c,_,h,f){return a(),e("div",null,n)}var x=t(l,[["render",o]]);export{g as __pageData,x as default};
