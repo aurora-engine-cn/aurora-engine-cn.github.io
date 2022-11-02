@@ -19,11 +19,23 @@ export default {
         ],
         // 导航栏配置
         nav:[
-            {text:"指南",link:"/introduce/aurora"},
+            {text:"指南",
+                items:[
+                    {text:"文档",link:"/introduce/aurora"},
+                ]
+            },
             {
                 text:"v1.3.6",
                 items:[
                     {text:"更新日志",link:"/update/update"}
+                ],
+            },
+
+            {
+                text:"gitee",
+                items:[
+                    { text: 'aurora', link: 'https://gitee.com/aurora-engine/aurora' },
+                    { text: '中间件', link: 'https://gitee.com/aurora-engine/aurora/tree/master_v1.3.x/middleware/' }
                 ],
             },
 
@@ -75,6 +87,13 @@ export default {
                     { text: '依赖管理', link: '/component/dep' },
                     { text: '容器生命周期', link: '/component/ioc' },
                     { text: '结构体接口', link: '/component/controller' },
+                ]
+            },
+            {
+                text: '中间件',
+                collapsible: true,
+                items: [
+                    { text: 'cors', link: '/middlewares/cors' },
                 ]
             },
             {
