@@ -21,7 +21,7 @@ export default {
         nav:[
             {text:"指南",link:"/introduce/aurora"},
             {
-                text:"v1.3.5",
+                text:"v1.3.7",
                 items:[
                     {text:"更新日志",link:"/update/update"}
                 ],
@@ -63,9 +63,10 @@ export default {
                 text: '配置模块',
                 collapsible: true,
                 items: [
-                    { text: '配置文件', link: '/config/config' },
-                    { text: '日志', link: '/config/log' },
+                    { text: 'Config', link: '/config/config' },
+                    { text: 'Log', link: '/config/log' },
                     { text: '系统变量', link: '/config/sys' },
+                    { text: 'Recover', link: '/config/recover' },
                 ]
             },
             {
