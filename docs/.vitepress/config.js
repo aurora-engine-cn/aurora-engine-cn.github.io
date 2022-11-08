@@ -53,6 +53,13 @@ export default {
                 ]
             },
             {
+                text: 'middleware',
+                collapsible: true,
+                items: [
+                    { text: 'cors', link: '/middlewares/cors' },
+                ]
+            },
+            {
                 text: '静态资源',
                 collapsible: true,
                 items: [
@@ -79,10 +86,11 @@ export default {
                 ]
             },
             {
-                text: 'ORM',
+                text: 'sql',
                 collapsible: true,
                 items: [
-                    { text: 'ORM', link: '/orm/orm' },
+                    { text: 'orm', link: '/orm/orm' },
+                    { text: 'sgo', link: '/orm/sgo' },
                 ]
             },
             {
