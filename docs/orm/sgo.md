@@ -588,3 +588,68 @@ func main() {
 
 ## Delete
 同上...
+
+## 自定义映射数据
+`SGO` 提供了上下文参数中复杂数据类型如何解析对应到 SQL 中对应的参数以及 SQL 中的查询结果集如何映射到自定义的复杂数据类型中。
+### Go参数解析到SQL
+```go
+// ToDatabase mapper 中sql解析模板对应的复杂数据据类型解析器
+// data : 对应的数据本身
+// 对应需要返回一个非结构体的基础数据类型（int float，bool，string） 更具需要构成的实际sql决定，后续的sql解析将自动匹配数据类
+type ToDatabase func(data any) (any, error)
+
+// DatabaseType 对外提供添加 自定义sql语句数据类型解析支持
+func DatabaseType(key string, dataType ToDatabase) 
+```
+需要注册一个 `ToDatabase` 的解析器，`SGO`中对时间类型做了内置支持如下
+```go
+func ToDatabaseTime(data any) (any, error) {
+	t := data.(time.Time)
+	return t.Format("2006-01-02 15:04:05"), nil
+}
+
+func ToDatabaseTimePointer(data any) (any, error) {
+	t := data.(*time.Time)
+	return t.Format("2006-01-02 15:04:05"), nil
+}
+```
+
+### SQL结果集解析到Go
+```go
+// ToGolang 处理数据库从查询结果集中的复杂数据类型的赋值
+// value : 是在一个结构体内的字段反射，通过该函数可以对这个字段进行初始化赋值
+// data  : 是value对应的具体参数值，可能是字符串，切片，map
+type ToGolang func(value reflect.Value, data any) error
+
+// GolangType 对外提供添加 自定义结果集数据类型解析支持
+// key 需要通过 TypeKey 函数获取一个全局唯一的标识符
+// dataType 需要提供 对应数据解析逻辑细节可以参考 TimeData 或者 TimeDataPointer
+func GolangType(key string, dataType ToGolang)
+```
+需要注册一个 `ToGolang` 的解析器，`SGO`中对时间类型做了内置支持如下
+```go
+// TimeData 时间类型数据
+func TimeData(value reflect.Value, data any) error {
+	t := data.(string)
+	parse, err := time.Parse("2006-04-02 15:04:05", t)
+	if err != nil {
+		return err
+	}
+	value.Set(reflect.ValueOf(parse))
+	return nil
+}
+
+func TimeDataPointer(value reflect.Value, data any) error {
+	t := data.(string)
+	parse, err := time.Parse("2006-04-02 15:04:05", t)
+	if err != nil {
+		return err
+	}
+	if value.CanSet() {
+		value.Set(reflect.ValueOf(&parse))
+	}
+
+	return nil
+}
+```
+

@@ -1,4 +1,5 @@
 # 静态资源
+现在的 `Aurora` 的试图解析只不过是通过读取文件响应给浏览器，使用的还是go包提供的 `html/template` 包解析。
 ## 视图资源
 `aurora` 默认静态资源解析目录是项目根目录，推荐单独创建一个静态资源目录存放  html , js ,css 等静态资源，
 在 `aurora` 项目中所有的html中引入的静态资源都必须以静态资源根路径为基础。通过`application.yaml`配置文件设置:
@@ -6,7 +7,7 @@
 aurora:
     resource: static
 ```
-配置文件中设置 `aurora.resource` 的值是项目根路径下面的一个目录 static ，此刻 static 目录为 所有静态资源的根路径。
+配置文件中设置 `aurora.resource` 的值是项目根路径下面的一个目录 static ，此刻 static 目录为 所有静态资源的根路径。注意，如果对静态资源进行了打包，此配置也是必须配置的。
 ## 文件资源
 `aurora` 基于go原生的api提供服务器文件系统支持，需要做出以下配置。
 ```yaml

@@ -21,10 +21,8 @@ export default {
         nav:[
             {text:"指南",link:"/introduce/aurora"},
             {
-                text:"v1.3.7",
-                items:[
-                    {text:"更新日志",link:"/update/update"}
-                ],
+                text:"v1.3.11",
+                link: 'https://gitee.com/aurora-engine/aurora'
             },
 
         ],
@@ -70,10 +68,11 @@ export default {
                 text: '配置模块',
                 collapsible: true,
                 items: [
-                    { text: 'Config', link: '/config/config' },
-                    { text: 'Log', link: '/config/log' },
+                    { text: '全局配置', link: '/config/option' },
+                    { text: '配置文件', link: '/config/config' },
+                    { text: '日志实例', link: '/config/log' },
                     { text: '系统变量', link: '/config/sys' },
-                    { text: 'Recover', link: '/config/recover' },
+                    { text: '错误捕捉', link: '/config/recover' },
                 ]
             },
             {
@@ -89,8 +88,7 @@ export default {
                 text: 'sql',
                 collapsible: true,
                 items: [
-                    { text: 'orm', link: '/orm/orm' },
-                    { text: 'sgo', link: '/orm/sgo' },
+                    { text: 'SGO', link: '/orm/sgo' },
                 ]
             },
             {
