@@ -21,7 +21,7 @@ export default {
         nav:[
             {text:"指南",link:"/introduce/aurora"},
             {
-                text:"v1.3.11",
+                text:"v1.3.12",
                 link: 'https://gitee.com/aurora-engine/aurora'
             },
 
