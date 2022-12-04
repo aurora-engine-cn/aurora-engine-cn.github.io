@@ -38,12 +38,12 @@ export default {
                 ]
             },
             {
-                text: 'Web 服务',
+                text: '路由',
                 collapsible: true,
                 items: [
-                    { text: 'Get 请求', link: '/router/get' },
-                    { text: 'Post 请求', link: '/router/post' },
-                    { text: 'Group 分组', link: '/router/group' },
+                    { text: 'Get', link: '/router/get' },
+                    { text: 'Post', link: '/router/post' },
+                    { text: '路由分组', link: '/router/group' },
                     { text: '中间件',link:'/router/middleware'},
                     { text: '参数验证器', link: '/router/constraint'},
                     { text: '数据响应', link: '/router/response'},
@@ -51,10 +51,10 @@ export default {
                 ]
             },
             {
-                text: 'middleware',
+                text: '中间件',
                 collapsible: true,
                 items: [
-                    { text: 'cors', link: '/middlewares/cors' },
+                    { text: '跨域', link: '/middlewares/cors' },
                 ]
             },
             {
@@ -85,38 +85,38 @@ export default {
                 ]
             },
             {
-                text: 'sql',
+                text: '数据库',
                 collapsible: true,
                 items: [
                     { text: 'SGO', link: '/orm/sgo' },
                 ]
             },
             {
-                text: 'Packages',
+                text: '数据结构',
                 collapsible: true,
                 items: [
                     { text: 'Packages', link: '/pkgs/pkgs' },
                 ]
             },
             {
-                text: 'utils',
+                text: '工具包',
                 collapsible: true,
                 items: [
-                    { text: 'sliceutils', link: '/utils/sliceutils' },
-                    { text: 'maputils', link: '/utils/maputils' },
-                    { text: 'stringutils', link: '/utils/stringutils' },
-                    { text: 'timeutils', link: '/utils/timeutils' },
-                    { text: 'uuidutils', link: '/utils/uuidutils' },
-                    { text: 'jsonutils', link: '/utils/jsonutils' },
+                    { text: '切片工具包', link: '/utils/sliceutils' },
+                    { text: '字典工具包', link: '/utils/maputils' },
+                    { text: '字符串工具包', link: '/utils/stringutils' },
+                    { text: '时间工具包', link: '/utils/timeutils' },
+                    { text: 'uid工具包', link: '/utils/uuidutils' },
+                    { text: 'JSON工具包', link: '/utils/jsonutils' },
                 ]
             },
-            {
-                text: '更新',
-                collapsible: true,
-                items: [
-                    { text: 'Update', link: '/update/update' },
-                ]
-            }
+            // {
+            //     text: '更新',
+            //     collapsible: true,
+            //     items: [
+            //         { text: 'Update', link: '/update/update' },
+            //     ]
+            // }
         ]
     },
 
