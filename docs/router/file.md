@@ -1,6 +1,6 @@
 # 文件上传
 ## MultipartFile
-通过系统参数 `` 可以获取到上传的文件信息
+通过系统参数 `*web.MultipartFile` 可以获取到上传的文件信息
 ```go
 server.Post("/upload", func(file *web.MultipartFile) {
     for _, headers := range file.File {
