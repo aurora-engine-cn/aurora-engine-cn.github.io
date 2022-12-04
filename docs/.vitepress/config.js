@@ -21,7 +21,7 @@ export default {
         nav:[
             {text:"指南",link:"/introduce/aurora"},
             {
-                text:"v1.3.12",
+                text:"v1.3.13",
                 link: 'https://gitee.com/aurora-engine/aurora'
             },
 
@@ -110,13 +110,13 @@ export default {
                     { text: 'JSON工具包', link: '/utils/jsonutils' },
                 ]
             },
-            // {
-            //     text: '更新',
-            //     collapsible: true,
-            //     items: [
-            //         { text: 'Update', link: '/update/update' },
-            //     ]
-            // }
+            {
+                text: '项目部署',
+                collapsible: true,
+                items: [
+                    { text: 'aurora + vue', link: '/deploy/deploy_vue' },
+                ]
+            }
         ]
     },
 
