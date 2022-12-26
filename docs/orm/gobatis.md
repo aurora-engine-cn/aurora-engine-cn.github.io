@@ -1,7 +1,7 @@
-# sgo
-`sgo` 是参考 `mybatis` 编写的sql标签解析，`sgo`仅提供对 sql 的上下文数据解析填充，并不保证对 sql 语句的语法检查。
+# gobatis
+`gobatis` 是参考 `mybatis` 编写的sql标签解析，`gobatis`仅提供对 sql 的上下文数据解析填充，并不保证对 sql 语句的语法检查。
 ## XML 解析规则
-`sgo` 解析 xml 文件中的sql语句，会严格检查上下文中的数据类型，字符串类型参数会自定添加 ` '' ` 单引号，其他基础数据类型不会添加，对于复杂数据结构(复合结构，泛型结构体等)会持续跟进
+`gobatis` 解析 xml 文件中的sql语句，会严格检查上下文中的数据类型，字符串类型参数会自定添加 ` '' ` 单引号，其他基础数据类型不会添加，对于复杂数据结构(复合结构，泛型结构体等)会持续跟进
 ，目前仅支持基础数据类型。
 ### 上下文数据
 上下文数据是由用户调用时候传递接，仅接受 map 或者结构体如下：
@@ -19,7 +19,7 @@
 ## demo
 ```xml
 <?xml version="1.0" encoding="ISO-8859-1"?>
-<!DOCTYPE mapper SYSTEM "https://gitee.com/aurora-engine/sgo/blob/master/sgo.dtd">
+<!DOCTYPE mapper SYSTEM "http://engine-aurora.com/GoBatis.dtd">
 
 <mapper namespace="user">
     <select id="find">
@@ -54,7 +54,7 @@
 `<if>` 标签 定义了 `expr` 属性， `expr` 属性的值为一串表达式，表达式应返回一个 `true` 或者 `false`，表示 `<if>` 标签内的内容是否可以被解析，表达式中使用到上下文数据可以通过点直接调用属性(注意属性名不要和关键字同名)
 
 ## 定义 Mapper
-`sgo` 中的 `mapper` 定义是基于结构体 和匿名函数字段来实现的(匿名函数字段，需要遵循一些规则):
+`gobatis` 中的 `mapper` 定义是基于结构体 和匿名函数字段来实现的(匿名函数字段，需要遵循一些规则):
 
 - 上下文参数，只能是结构体，指针结构体或者map
 - 至少有一个返回值，一个返回值只能是 error
@@ -108,7 +108,7 @@ type UserMapper struct {
 ```xml
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <!DOCTYPE mapper 
-        SYSTEM "https://gitee.com/aurora-engine/sgo/blob/master/sgo.dtd">
+        SYSTEM "http://engine-aurora.com/GoBatis.dtd">
 
 <mapper namespace="UserMapper">
     <select id="FindUser">
@@ -127,7 +127,7 @@ package main
 
 import (
 	"fmt"
-	"gitee.com/aurora-engine/sgo"
+	"gitee.com/aurora-engine/gobatis"
 )
 func main() {
 	ctx := map[string]any{
@@ -138,7 +138,7 @@ func main() {
 		fmt.Println(err.Error())
 		return
 	}
-	build := sgo.New(open)
+	build := gobatis.New(open)
 	build.Source("/")
 	mapper := &UserMapper{}
 	build.ScanMappers(mapper)
@@ -176,12 +176,12 @@ type Student struct {
 ## 创建 Mapper 和 XML
 ```xml
 <?xml version="1.0" encoding="ISO-8859-1"?>
-<!DOCTYPE mapper SYSTEM "http://sgo.com">
+<!DOCTYPE mapper SYSTEM "http://engine-aurora.com/GoBatis.dtd">
 <mapper namespace="StudentMapper">
     
 </mapper>
 ```
-解析： `http://sgo.com` 文档约束是通过 编辑器设置的，项目文件夹下的 sgo.dtd 文件导入即可。<br>
+解析： `http://engine-aurora.com/GoBatis.dtd` 文档约束是通过 编辑器设置的，项目文件夹下的 GoBatis.dtd 文件导入即可。<br>
 更具 mapper xml 文件定义的 命名空间定义一个结构体类型名称一致的 Mapper 结构体（和普通结构体没什么区别只是一个叫法）
 ```go
 type StudentMapper struct {
@@ -202,7 +202,7 @@ type StudentMapper struct {
 开始定义 xml 元素，insert 中的模板参数，均来自于 mapper 函数的上下文参数中
 ```xml
 <?xml version="1.0" encoding="ISO-8859-1"?>
-<!DOCTYPE mapper SYSTEM "http://sgo.com">
+<!DOCTYPE mapper SYSTEM "http://engine-aurora.com/GoBatis.dtd">
 
 <mapper namespace="StudentMapper">
     <insert id="InsertOne">
@@ -210,14 +210,14 @@ type StudentMapper struct {
     </insert>
 </mapper>
 ```
-创建 sgo 并调用执行
+创建 gobatis 并调用执行
 ```go
 package main
 
 import (
 	"database/sql"
 	"fmt"
-	"gitee.com/aurora-engine/sgo"
+	"gitee.com/aurora-engine/gobatis"
 	_ "github.com/go-sql-driver/mysql"
 	"time"
 )
@@ -247,7 +247,7 @@ func main() {
 	if err != nil {
 		return
 	}
-	build := sgo.New(open)
+	build := gobatis.New(open)
 	build.Source("/")
 	mapper := &StudentMapper{}
 	build.ScanMappers(mapper)
@@ -290,7 +290,7 @@ package main
 import (
 	"database/sql"
 	"fmt"
-	"gitee.com/aurora-engine/sgo"
+	"gitee.com/aurora-engine/gobatis"
 	_ "github.com/go-sql-driver/mysql"
 	"time"
 )
@@ -334,7 +334,7 @@ func main() {
 		fmt.Println(err.Error())
 		return
 	}
-	build := sgo.New(open)
+	build := gobatis.New(open)
 	build.Source("/")
 	mapper := &StudentMapper{}
 	build.ScanMappers(mapper)
@@ -372,7 +372,7 @@ package main
 import (
 	"database/sql"
 	"fmt"
-	"gitee.com/aurora-engine/sgo"
+	"gitee.com/aurora-engine/gobatis"
 	_ "github.com/go-sql-driver/mysql"
 	"time"
 )
@@ -421,7 +421,7 @@ func main() {
 		fmt.Println(err.Error())
 		return
 	}
-	build := sgo.New(open)
+	build := gobatis.New(open)
 	build.Source("/")
 	mapper := &StudentMapper{}
 	build.ScanMappers(mapper)
@@ -456,7 +456,7 @@ package main
 import (
 	"database/sql"
 	"fmt"
-	"gitee.com/aurora-engine/sgo"
+	"gitee.com/aurora-engine/gobatis"
 	_ "github.com/go-sql-driver/mysql"
 	"time"
 )
@@ -481,7 +481,7 @@ func main() {
 		fmt.Println(err.Error())
 		return
 	}
-	build := sgo.New(open)
+	build := gobatis.New(open)
 	build.Source("/")
 	mapper := &StudentMapper{}
 	build.ScanMappers(mapper)
@@ -520,7 +520,7 @@ package main
 import (
 	"database/sql"
 	"fmt"
-	"gitee.com/aurora-engine/sgo"
+	"gitee.com/aurora-engine/gobatis"
 	_ "github.com/go-sql-driver/mysql"
 	"time"
 )
@@ -570,7 +570,7 @@ func main() {
 		fmt.Println(err.Error())
 		return
 	}
-	build := sgo.New(open)
+	build := gobatis.New(open)
 	build.Source("/")
 	mapper := &StudentMapper{}
 	build.ScanMappers(mapper)

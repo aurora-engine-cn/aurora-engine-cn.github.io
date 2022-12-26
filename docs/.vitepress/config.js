@@ -89,8 +89,7 @@ export default {
                 text: 'sql',
                 collapsible: true,
                 items: [
-                    { text: 'orm', link: '/orm/orm' },
-                    { text: 'sgo', link: '/orm/sgo' },
+                    { text: 'sgo', link: '/orm/gobatis' },
                 ]
             },
             {
