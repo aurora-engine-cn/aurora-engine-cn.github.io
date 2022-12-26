@@ -88,7 +88,7 @@ export default {
                 text: '数据库',
                 collapsible: true,
                 items: [
-                    { text: 'SGO', link: '/orm/sgo' },
+                    { text: 'GoBatis', link: '/orm/gobatis' },
                 ]
             },
             {
