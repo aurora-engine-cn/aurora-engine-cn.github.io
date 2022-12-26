@@ -1,0 +1,1 @@
+import{_ as s,c as a,o as n,a as o}from"./app.af55ad6b.js";const C=JSON.parse('{"title":"\u8DE8\u57DF\u4E2D\u95F4\u4EF6","description":"","frontmatter":{},"headers":[],"relativePath":"middlewares/cors.md"}'),l={name:"middlewares/cors.md"},p=o("",3),e=[p];function r(c,t,D,F,y,A){return n(),a("div",null,e)}var d=s(l,[["render",r]]);export{C as __pageData,d as default};

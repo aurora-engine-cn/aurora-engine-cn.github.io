@@ -6,22 +6,39 @@
 ## 组件
 什么是组件? 在 `aurora` 中组件就是一个结构体变量，组件有唯一的id对应一个变量。组件主要分为2类，匿名组件和命名组件，前者并非没有名称，只是来源于注册方式不同采用的是结构体的全名来作为id。
 ## 加载组件
-加载组件，就是把初始化好的变量，注册到 `aurora` 的内部容器中，在服务器启动期间，会初始化容器完成指定的依赖赋值
+加载组件，就是把初始化好的变量，注册到 `aurora` 的内部容器中，在服务器启动期间，会初始化容器完成指定的依赖赋值，注册到容器中的组件，组件本身初始化号的属性不会被容器进行初始化。
 #### 方式一 : 命名注册
 ```go
 type Component map[string]interface{}
 //通过 Use 方法注册 Component 
 //注册了一个 id 为 xxx 的组件
-a.Use(aurora.Component{"aaa":&{}})
+a.Use(web.Component{"aaa":&{}})
 ```
 #### 方式二 : 匿名注册
 ```go
 //通过 Use 方法直接 指针类型的结构体
 //注册了一个 id 为 Xxx 的组件
 a.Use(new(Xxx))
+
 ```
+#### 方式三 : 构造器
+```go
+type Constructor func() any
+// NewEditor 构造器
+func NewXxxx() web.Constructor {
+	return func() interface{} {
+		return new(Xxxx)
+	}
+}
+// Server 全局加载
+func (server *Server) Server() {
+	server.Use(NewXxxx())
+}
+```
+方式二和方式三的区别不大
 
 ## 使用组件
+### 指针结构体组件
 把组件注册到 `aurora` 的容器中，通过 golang `tag` 属性 `ref:""` 来对容器中的依赖进行使用
 ```go
 
@@ -75,5 +92,36 @@ func (s *TestServerB) GetName() string {
 func (s *TestServerA) Update() {
 	fmt.Println(s.TestA.Name)
 	s.TestA.Name = "Bbb"
+}
+```
+### 接口组件
+接口组件提供了接口字段的初始化赋值，若组件内部有接口变量，容器初始化期间默认通过字段名从容器中查找依赖，默认查找方式未找到则跳过初始化。如果接口字段指定了 tag `ref` 属性，找不到对应的依赖变量则返回错误信息。
+```go
+type A interface {
+	Get() string
+}
+
+type Aaa struct {
+	Name string
+}
+
+func (a *Aaa) Get() string {
+	return a.Name
+}
+
+type Bbb struct {
+	A
+}
+func main(){
+    aaa := &serviceImp.Aaa{Name: "aaa"}
+	bbb := &serviceImp.Bbb{}
+	space := NewSpace()
+	space.Put("A", aaa)
+	space.Put("", bbb)
+	err := space.Start()
+	if err != nil {
+		panic(err)
+		return
+	}
 }
 ```

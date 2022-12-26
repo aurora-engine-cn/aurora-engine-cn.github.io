@@ -21,10 +21,8 @@ export default {
         nav:[
             {text:"指南",link:"/introduce/aurora"},
             {
-                text:"v1.3.7",
-                items:[
-                    {text:"更新日志",link:"/update/update"}
-                ],
+                text:"v1.3.13",
+                link: 'https://gitee.com/aurora-engine/aurora'
             },
 
         ],
@@ -40,12 +38,12 @@ export default {
                 ]
             },
             {
-                text: 'Web 服务',
+                text: '路由',
                 collapsible: true,
                 items: [
-                    { text: 'Get 请求', link: '/router/get' },
-                    { text: 'Post 请求', link: '/router/post' },
-                    { text: 'Group 分组', link: '/router/group' },
+                    { text: 'Get', link: '/router/get' },
+                    { text: 'Post', link: '/router/post' },
+                    { text: '路由分组', link: '/router/group' },
                     { text: '中间件',link:'/router/middleware'},
                     { text: '参数验证器', link: '/router/constraint'},
                     { text: '数据响应', link: '/router/response'},
@@ -53,10 +51,10 @@ export default {
                 ]
             },
             {
-                text: 'middleware',
+                text: '中间件',
                 collapsible: true,
                 items: [
-                    { text: 'cors', link: '/middlewares/cors' },
+                    { text: '跨域', link: '/middlewares/cors' },
                 ]
             },
             {
@@ -70,10 +68,11 @@ export default {
                 text: '配置模块',
                 collapsible: true,
                 items: [
-                    { text: 'Config', link: '/config/config' },
-                    { text: 'Log', link: '/config/log' },
+                    { text: '全局配置', link: '/config/option' },
+                    { text: '配置文件', link: '/config/config' },
+                    { text: '日志实例', link: '/config/log' },
                     { text: '系统变量', link: '/config/sys' },
-                    { text: 'Recover', link: '/config/recover' },
+                    { text: '错误捕捉', link: '/config/recover' },
                 ]
             },
             {
@@ -86,36 +85,36 @@ export default {
                 ]
             },
             {
-                text: 'sql',
+                text: '数据库',
                 collapsible: true,
                 items: [
-                    { text: 'sgo', link: '/orm/gobatis' },
+                    { text: 'SGO', link: '/orm/sgo' },
                 ]
             },
             {
-                text: 'Packages',
+                text: '数据结构',
                 collapsible: true,
                 items: [
                     { text: 'Packages', link: '/pkgs/pkgs' },
                 ]
             },
             {
-                text: 'utils',
+                text: '工具包',
                 collapsible: true,
                 items: [
-                    { text: 'sliceutils', link: '/utils/sliceutils' },
-                    { text: 'maputils', link: '/utils/maputils' },
-                    { text: 'stringutils', link: '/utils/stringutils' },
-                    { text: 'timeutils', link: '/utils/timeutils' },
-                    { text: 'uuidutils', link: '/utils/uuidutils' },
-                    { text: 'jsonutils', link: '/utils/jsonutils' },
+                    { text: '切片工具包', link: '/utils/sliceutils' },
+                    { text: '字典工具包', link: '/utils/maputils' },
+                    { text: '字符串工具包', link: '/utils/stringutils' },
+                    { text: '时间工具包', link: '/utils/timeutils' },
+                    { text: 'uid工具包', link: '/utils/uuidutils' },
+                    { text: 'JSON工具包', link: '/utils/jsonutils' },
                 ]
             },
             {
-                text: '更新',
+                text: '项目部署',
                 collapsible: true,
                 items: [
-                    { text: 'Update', link: '/update/update' },
+                    { text: 'aurora + vue', link: '/deploy/deploy_vue' },
                 ]
             }
         ]
