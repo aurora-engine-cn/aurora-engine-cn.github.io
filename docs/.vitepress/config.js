@@ -2,6 +2,7 @@ export default {
     title: 'Aurora',
     description: 'Just playing around.',
     lang: 'cn-ZH',
+    base:'/docs/',
     markdown: {
         lineNumbers: true,
     },
@@ -21,7 +22,7 @@ export default {
         nav:[
             {text:"指南",link:"/introduce/aurora"},
             {
-                text:"v1.3.13",
+                text:"v1.3.15",
                 link: 'https://gitee.com/aurora-engine/aurora'
             },
 
@@ -85,38 +86,12 @@ export default {
                 ]
             },
             {
-                text: '数据库',
+                text: 'GoBatis',
                 collapsible: true,
                 items: [
                     { text: 'GoBatis', link: '/orm/gobatis' },
                 ]
             },
-            {
-                text: '数据结构',
-                collapsible: true,
-                items: [
-                    { text: 'Packages', link: '/pkgs/pkgs' },
-                ]
-            },
-            {
-                text: '工具包',
-                collapsible: true,
-                items: [
-                    { text: '切片工具包', link: '/utils/sliceutils' },
-                    { text: '字典工具包', link: '/utils/maputils' },
-                    { text: '字符串工具包', link: '/utils/stringutils' },
-                    { text: '时间工具包', link: '/utils/timeutils' },
-                    { text: 'uid工具包', link: '/utils/uuidutils' },
-                    { text: 'JSON工具包', link: '/utils/jsonutils' },
-                ]
-            },
-            {
-                text: '项目部署',
-                collapsible: true,
-                items: [
-                    { text: 'aurora + vue', link: '/deploy/deploy_vue' },
-                ]
-            }
         ]
     },
 
