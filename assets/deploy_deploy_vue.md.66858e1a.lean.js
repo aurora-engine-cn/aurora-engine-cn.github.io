@@ -1,0 +1,1 @@
+import{_ as s,c as n,o as a,N as l}from"./chunks/framework.cff67d0c.js";const A=JSON.parse('{"title":"Aurora + Vue","description":"","frontmatter":{},"headers":[],"relativePath":"deploy/deploy_vue.md"}'),p={name:"deploy/deploy_vue.md"},e=l("",24),o=[e];function r(c,t,i,D,y,F){return a(),n("div",null,o)}const u=s(p,[["render",r]]);export{A as __pageData,u as default};

@@ -1,0 +1,1 @@
+import{_ as s,c as a,o as n,N as l}from"./chunks/framework.cff67d0c.js";const A=JSON.parse('{"title":"文件上传","description":"","frontmatter":{},"headers":[],"relativePath":"router/file.md"}'),p={name:"router/file.md"},o=l("",7),e=[o];function r(t,c,D,F,y,i){return n(),a("div",null,e)}const d=s(p,[["render",r]]);export{A as __pageData,d as default};

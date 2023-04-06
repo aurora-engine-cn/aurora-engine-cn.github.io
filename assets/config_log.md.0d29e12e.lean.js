@@ -1,1 +1,0 @@
-import{_ as s,c as a,o as n,N as e}from"./chunks/framework.a7bfe727.js";const y=JSON.parse('{"title":"日志","description":"","frontmatter":{},"headers":[],"relativePath":"config/log.md"}'),l={name:"config/log.md"},p=e("",6),o=[p];function r(t,c,i,F,D,A){return n(),a("div",null,o)}const u=s(l,[["render",r]]);export{y as __pageData,u as default};
