@@ -1,1 +1,0 @@
-import{_ as a,c as s,o as e,N as n}from"./chunks/framework.a7bfe727.js";const y=JSON.parse('{"title":"配置项","description":"","frontmatter":{},"headers":[],"relativePath":"config/option.md"}'),o={name:"config/option.md"},l=n("",17),p=[l];function t(r,c,i,d,u,D){return e(),s("div",null,p)}const h=a(o,[["render",t]]);export{y as __pageData,h as default};
