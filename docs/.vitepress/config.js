@@ -2,7 +2,7 @@ export default {
     title: 'Aurora',
     description: 'Just playing around.',
     lang: 'cn-ZH',
-    base:'/docs/',
+    base:'/docs/.vitepress/dist/',
     markdown: {
         lineNumbers: true,
     },
