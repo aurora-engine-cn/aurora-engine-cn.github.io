@@ -1,1 +1,0 @@
-import{_ as s,c as a,o as n,N as o}from"./chunks/framework.87190bdf.js";const C=JSON.parse('{"title":"跨域中间件","description":"","frontmatter":{},"headers":[],"relativePath":"middlewares/cors.md"}'),l={name:"middlewares/cors.md"},p=o("",3),e=[p];function r(t,c,D,F,y,i){return n(),a("div",null,e)}const d=s(l,[["render",r]]);export{C as __pageData,d as default};

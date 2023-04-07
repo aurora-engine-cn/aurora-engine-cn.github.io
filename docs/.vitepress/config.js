@@ -2,8 +2,6 @@ export default {
     title: 'Aurora',
     description: 'Just playing around.',
     lang: 'cn-ZH',
-    base:'/view/',
-    outDir:'../view',
     markdown: {
         lineNumbers: true,
     },
