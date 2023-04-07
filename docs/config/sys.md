@@ -19,7 +19,7 @@ a.Get("/", func(rew http.ResponseWritre) {
 		
 })
 
-a.Get("/", func(ctx ctx Context) {
+a.Get("/", func(ctx web.Context) {
 		
 })
 

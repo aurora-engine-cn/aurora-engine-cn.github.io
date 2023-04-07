@@ -23,6 +23,13 @@ export default {
         nav:[
             {text:"指南",link:"/introduce/aurora"},
             {
+                text: '生态',
+                items:[
+                    {text:"GoBatis",link:"/orm/gobatis"},
+                    {text:"plugin",link:'https://plugins.jetbrains.com/plugin/21200-aurora-engine'}
+                ],
+            },
+            {
                 text:"v1.3.15",
                 link: 'https://gitee.com/aurora-engine/aurora'
             },
@@ -43,13 +50,8 @@ export default {
                 text: '路由',
                 collapsible: true,
                 items: [
-                    { text: 'Get', link: '/router/get' },
-                    { text: 'Post', link: '/router/post' },
-                    { text: '路由分组', link: '/router/group' },
-                    { text: '中间件',link:'/router/middleware'},
-                    { text: '参数验证器', link: '/router/constraint'},
+                    { text: '路由解析', link: '/router/args' },
                     { text: '数据响应', link: '/router/response'},
-                    { text: 'File 上传', link: '/router/file'},
                 ]
             },
             {
