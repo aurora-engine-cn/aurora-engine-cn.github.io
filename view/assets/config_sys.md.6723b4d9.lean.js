@@ -1,0 +1,1 @@
+import{_ as s,c as n,o as a,N as l}from"./chunks/framework.87190bdf.js";const A=JSON.parse('{"title":"系统参数","description":"","frontmatter":{},"headers":[],"relativePath":"config/sys.md"}'),p={name:"config/sys.md"},e=l("",10),t=[e];function o(r,c,D,y,F,i){return a(),n("div",null,t)}const u=s(p,[["render",o]]);export{A as __pageData,u as default};

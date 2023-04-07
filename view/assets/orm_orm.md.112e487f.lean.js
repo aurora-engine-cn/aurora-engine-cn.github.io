@@ -1,0 +1,1 @@
+import{_ as s,c as n,o as a,N as l}from"./chunks/framework.87190bdf.js";const i=JSON.parse('{"title":"ORM","description":"","frontmatter":{},"headers":[],"relativePath":"orm/orm.md"}'),p={name:"orm/orm.md"},o=l("",20),e=[o];function r(t,c,D,F,y,C){return a(),n("div",null,e)}const u=s(p,[["render",r]]);export{i as __pageData,u as default};

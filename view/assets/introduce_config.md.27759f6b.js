@@ -1,0 +1,1 @@
+import{_ as e,c as t,o}from"./chunks/framework.87190bdf.js";const f=JSON.parse('{"title":"","description":"","frontmatter":{},"headers":[],"relativePath":"introduce/config.md"}'),c={name:"introduce/config.md"};function n(r,a,s,i,d,p){return o(),t("div")}const m=e(c,[["render",n]]);export{f as __pageData,m as default};

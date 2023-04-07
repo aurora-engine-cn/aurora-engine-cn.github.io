@@ -1,0 +1,1 @@
+import{_ as s,c as n,o as a,N as p}from"./chunks/framework.87190bdf.js";const A=JSON.parse('{"title":"Post 请求","description":"","frontmatter":{},"headers":[],"relativePath":"router/post.md"}'),l={name:"router/post.md"},o=p("",9),e=[o];function t(r,c,D,F,y,i){return a(),n("div",null,e)}const u=s(l,[["render",t]]);export{A as __pageData,u as default};
