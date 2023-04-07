@@ -1,1 +1,0 @@
-import{_ as s,c as n,o as a,N as l}from"./chunks/framework.cff67d0c.js";const C=JSON.parse('{"title":"参数验证器","description":"","frontmatter":{},"headers":[],"relativePath":"router/constraint.md"}'),e={name:"router/constraint.md"},p=l("",9),o=[p];function t(r,c,D,y,F,i){return a(),n("div",null,o)}const d=s(e,[["render",t]]);export{C as __pageData,d as default};

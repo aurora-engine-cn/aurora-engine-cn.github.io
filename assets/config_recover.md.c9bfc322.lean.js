@@ -1,1 +1,0 @@
-import{_ as s,c as a,o as n,N as e}from"./chunks/framework.cff67d0c.js";const C=JSON.parse('{"title":"错误捕捉器","description":"","frontmatter":{},"headers":[],"relativePath":"config/recover.md"}'),l={name:"config/recover.md"},p=e("",6),o=[p];function r(t,c,D,i,F,y){return n(),a("div",null,o)}const d=s(l,[["render",r]]);export{C as __pageData,d as default};

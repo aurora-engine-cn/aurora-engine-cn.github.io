@@ -1,1 +1,0 @@
-import{_ as s,c as a,o as n,N as e}from"./chunks/framework.cff67d0c.js";const C=JSON.parse('{"title":"路由中间件","description":"","frontmatter":{},"headers":[],"relativePath":"router/middleware.md"}'),l={name:"router/middleware.md"},o=e("",12),p=[o];function t(r,c,i,D,d,y){return n(),a("div",null,p)}const u=s(l,[["render",t]]);export{C as __pageData,u as default};
