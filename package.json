@@ -7,6 +7,7 @@
   "license": "MIT",
   "scripts": {
     "docs:build": "vitepress build docs",
+    "docs:dev": "vitepress dev docs",
     "docs:preview": "vitepress preview docs"
   },
   "devDependencies": {

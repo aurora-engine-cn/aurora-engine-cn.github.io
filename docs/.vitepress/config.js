@@ -7,7 +7,6 @@ export default {
     },
     themeConfig: {
         siteTitle: false,
-
         logo: 'https://img-1252940994.cos.ap-nanjing.myqcloud.com/logo.png',
         socialLinks: [
             {
@@ -28,7 +27,7 @@ export default {
                 ],
             },
             {
-                text:"v1.3.15",
+                text:"v1.3.16.3",
                 link: 'https://gitee.com/aurora-engine/aurora'
             },
 

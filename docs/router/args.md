@@ -37,6 +37,17 @@ a.Get("/get", func(data Get) {
 })
 ```
 
+### Get 切片解析
+Get请求的数组或者切片接收参数只能通过 `map`或者 `starcut` 来进行解析
+```go
+type Arg struct {
+	Id   []string  // Id 和 入参 id保持一直
+}
+// GET http://localhost:8080/get?id=20&id=21
+a.Get("/get", func(data Arg) {
+    fmt.Println(data)
+})
+```
 ## Post 请求
 Post 请求的参数解析对应更加简单，大多是以`struct`或者`map`的方式进行接收，我们先准备一个请求体作为测试的例子
 ```json
