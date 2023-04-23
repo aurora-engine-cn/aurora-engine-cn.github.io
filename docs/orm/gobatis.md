@@ -18,55 +18,65 @@
 
 
 ## 定义 Mapper
-`gobatis` 中的 `mapper` 定义是基于结构体 和匿名函数字段来实现的(匿名函数字段，需要遵循一些规则):
+`gobatis` 中的 `mapper` 定义是基于结构体 和`匿名函数`字段来实现的(匿名函数字段，需要遵循一些规则):
 
 - 上下文参数，只能是结构体，指针结构体或者map
-- 至少有一个返回值，一个返回值只能是 error
+- 至少有一个返回值，一个返回值只能是 `error`
 
 ## 快速入门
 
 ### 创建 table
 创建一张表，用于测试
 ```sql
-## 用户设计
-create table comm_user(
-    user_id varchar(50) primary key         comment '主键',
-    user_account varchar(50)                comment '账号',
-    user_email varchar(50)                  comment '邮箱',
-    user_password varchar(200)              comment '密码',
-    user_name varchar(50) not null          comment '昵称',
-    user_age int default 0                  comment '年龄',
-    user_birthday datetime                  comment '生日',
-    user_head_picture varchar(100)          comment '头像',
-    user_create_time timestamp              comment '用户创建时间'
-) comment '用户设计';
+create table student
+(
+    id          int auto_increment primary key,
+    name        varchar(20) null,
+    age         int         null,
+    create_time datetime    null
+);
 ```
 ### 创建 映射模型
-更具 数据库表，或者sql查询结果集 创建一个结构体用于接收查询数据
+更具 数据库表，或者sql查询结果集 创建一个结构体用于接收查询数据，`column` 属性的值对应者 sql 表定义的列名
 ```go
-// UserModel 用户模型
-type UserModel struct {
-	UserId          string `column:"user_id"`
-	UserAccount     string `column:"user_account"`
-	UserEmail       string `column:"user_email"`
-	UserPassword    string `column:"user_password"`
-	UserName        string `column:"user_name"`
-	UserAge         int    `column:"user_age"`
-	UserBirthday    string `column:"user_birthday"`
-	UserHeadPicture string `column:"user_head_picture"`
-	UserCreateTime  string `column:"user_create_time"`
+// Student 用户模型
+type Student struct {
+	Id         int    `column:"id"json:"id,omitempty"`
+	Name       string `column:"name"json:"name,omitempty"`
+	Age        int    `column:"age"json:"age,omitempty"`
+	CreateTime string `column:"create_time"json:"create_time,omitempty"`
 }
+```
+### 准备 运行环境
+#### 创建 mapper 结构体
+```go
+type StudentMapper struct {
+}
+```
+#### 创建 mapper 文件
+更具 mapper 结构体的名称创建一个 mapper xml文件
+```xml
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<mapper namespace="StudentMapper">
+    
+</mapper>
 ```
 
-### 创建 Mapper
-更具上述的规范，创建 `Mapper`
-```go
-// UserMapper s
-type UserMapper struct {
-	FindUser   func(ctx any) (UserModel, error)
-	UserSelect func(ctx any) (map[string]any, error)
-}
+#### 项目目录结构
+```txt
+/
+|model
+|   |student.go
+|mapper_test.go
+|StudentMapper.go
+|text.xml
 ```
+
+#### 初始化 gobatis
+
+### 实现 数据库插入数据
+
+
 
 ### 创建 XML
 ```xml
