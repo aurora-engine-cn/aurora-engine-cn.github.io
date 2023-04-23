@@ -64,503 +64,261 @@ type StudentMapper struct {
 
 #### 项目目录结构
 ```txt
-/
-|model
-|   |student.go
-|mapper_test.go
-|StudentMapper.go
-|text.xml
+|--root
+|--model
+|   |--student.go
+|--mapper_test.go
+|--StudentMapper.go
+|--text.xml
 ```
 
 #### 初始化 gobatis
+```go
+var studentMapper *StudentMapper
+
+func init() {
+	studentMapper = &StudentMapper{}
+	open, err := sql.Open("mysql", "root:Aurora@2022@tcp(localhost:3306)/demo?charset=utf8&parseTime=True&loc=Local")
+	if err != nil {
+		return
+	}
+	batis := gobatis.New(open)
+	batis.Source("/")
+	batis.ScanMappers(studentMapper)
+}
+```
 
 ### 实现 数据库插入数据
-
-
-
-### 创建 XML
-```xml
-<?xml version="1.0" encoding="ISO-8859-1"?>
-<!DOCTYPE mapper>
-
-<mapper namespace="UserMapper">
-    <select id="FindUser">
-        select * from comm_user where user_id={id}
-    </select>
-    <select id="UserSelect">
-        select * from comm_user where user_id={id}
-    </select>
-</mapper>
-```
-创建的 xml 文件 `<mapper>` `namespace` 属性一定要和 Mapper 结构体的名称一样，区分大小写，`<select>` `id` 属性要和 Mapper 结构体 函数字段名称匹配。
-
-### 创建并使用
-```go
-package main
-
-import (
-	"fmt"
-	"gitee.com/aurora-engine/gobatis"
-)
-func main() {
-	ctx := map[string]any{
-		"id": "3de784d9a29243cdbe77334135b8a282",
-	}
-	open, err := sql.Open("mysql", "root:xxx@2022@tcp(82.xx.xx.xx:xx)/xx")
-	if err != nil {
-		fmt.Println(err.Error())
-		return
-	}
-	build := gobatis.New(open)
-	build.Source("/")
-	mapper := &UserMapper{}
-	build.ScanMappers(mapper)
-	user, err := mapper.FindUser(ctx)
-	if err != nil {
-		return
-	}
-	fmt.Println(user)
-}
-```
-
-## 创建数据库表
-创建一个学生表
-```sql
-create table student
-(
-    id          int         null,
-    name        varchar(20) null,
-    age         int         null,
-    create_time datetime    null
-);
-```
-
-## 创建映射对象
-对应在go代码中创建表的对应映射结构, `column` tag 设置字段的一一对应关系
-```go
-type Student struct {
-	Id         string `column:"id"`
-	Name       string `column:"name"`
-	Age        int    `column:"age"`
-	CreateTime string `column:"create_time"`
-}
-```
-
-## 创建 Mapper 和 XML
-```xml
-<?xml version="1.0" encoding="ISO-8859-1"?>
-<!DOCTYPE mapper>
-<mapper namespace="StudentMapper">
-    
-</mapper>
-```
-
-更具 mapper xml 文件定义的 命名空间定义一个结构体类型名称一致的 Mapper 结构体（和普通结构体没什么区别只是一个叫法）
+#### 添加 mapper 方法
+此时你的 `mapper` 应该是下面的样子
 ```go
 type StudentMapper struct {
+	AddOne func(student model.Student) error
+}
+```
+#### 添加 xml insert 标签
+根据定义的字段名称,对应在 mapper 文件中添加一个 `id="AddOne"` insert 标签，
+标签内书写需要执行的`sql`语句，`sql`语句中的变量通过 `{}` 的形式去加载解析
+```xml
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<mapper namespace="StudentMapper">
+    <insert id="AddOne">
+        insert into student (name, age, create_time)
+        values ({name},{age},{createtime});
+    </insert>
+</mapper>
+```
+
+#### 调用执行插入数据
+ 下面通过测试对刚刚定义的插入方法进行执行，所有的前置步骤都在上面的初始化中准备好了，直接调用 `AddOne` 字段即可实现数据插入
+```go
+func TestInsert(t *testing.T) {
+	s := model.Student{
+		Name:       "test",
+		Age:        1,
+		CreateTime: time.Now().Format("2006-01-02 15:04:05"),
+	}
+	if err := studentMapper.AddOne(s); err != nil {
+		t.Error(err.Error())
+		return
+	}
+}
+```
+
+#### 获取 执行影响行数 和 自增长主键
+定义mapper字段 `InsertId`,它有3个返回值，第一个返回值是执行sql返回的影响行数，第二个返回值是返回自增长逐渐值，
+默认第一个参数是返回影响行数。
+```go
+type StudentMapper struct {
+	AddOne   func(student model.Student) error
+	InsertId func(student model.Student) (int64, int64, error)
+}
+```
+#### 定义xml
+```xml
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<mapper namespace="StudentMapper">
+    <insert id="AddOne">
+        insert into student (name, age, create_time)
+        values ({name},{age},{createtime});
+    </insert>
+    <insert id="InsertId">
+        insert into student (name, age, create_time)
+        values ({name},{age},{createtime});
+    </insert>
+</mapper>
+```
+#### 执行测试
+```go
+func TestInsertId(t *testing.T) {
+	var count, id int64
+	var err error
+	s := model.Student{
+		Name:       "test",
+		Age:        2,
+		CreateTime: time.Now().Format("2006-01-02 15:04:05"),
+	}
+
+	if count, id, err = studentMapper.InsertId(s); err != nil {
+		t.Error(err.Error())
+		return
+	}
+	t.Log("count:", count, "id:", id)
+}
+```
+
+
+#### 实现批量插入
+添加新的方法，此时你的 `mapper` 应该是下面的样子
+```go
+type StudentMapper struct {
+	AddOne   func(student model.Student) error
+	InsertId func(student model.Student) (int64, int64, error)
+	Adds     func(ctx any) error
+}
+```
+#### 定义新的 mapper insert
+此时你的的 mapper 应该是如下，添加了一个新的 insert 标签 `id="Adds"`，其中 使用`<for></for>` 标签对传递的数组数据进行了解析
+`slice="{arr}"` 属性指定了属性名称为 arr 的数据，`item="stu"`表示的是迭代过程中的对象参数，更具数据元素来定，如果是基础数据，那么代表数据本身
+```xml
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<mapper namespace="StudentMapper">
+    <insert id="AddOne">
+        insert into student (name, age, create_time)
+        values ({name},{age},{createtime});
+    </insert>
+    <insert id="Adds">
+        insert into student (name, age, create_time) values
+        <for slice="{arr}" item="stu">
+            ({stu.name},{stu.age},{stu.createtime})
+        </for>
+    </insert>
+</mapper>
+```
+#### 调用执行
+```go
+func TestSliceInsert(t *testing.T) {
+	var arr []model.Student
+	for i := 0; i < 10; i++ {
+		s := model.Student{
+			Name:       fmt.Sprintf("test_%d", i),
+			Age:        i + 2,
+			CreateTime: time.Now().Format("2006-01-02 15:04:05"),
+		}
+		arr = append(arr, s)
+	}
+	err := studentMapper.Adds(
+		map[string]any{
+			"arr": arr,
+		},
+	)
+	if err != nil {
+		t.Error(err.Error())
+		return
+	}
+}
+```
+
+### 数据查询
+#### 定义查询 
+定义了mapper字段 `QueryAll` 查询全部采用对应的切片模型进行接收即可，查询多条数据结果集的时候任然可以使用单个模型接收，
+只是单个模型的数据仅仅取到结果集的第一条数据。
+```go
+type StudentMapper struct {
+	AddOne   func(student model.Student) error
+	InsertId func(student model.Student) (int64, int64, error)
+	Adds     func(ctx any) error
 	
+	QueryAll func() ([]model.Student, error)
 }
 ```
-
-前置工作已经准备就绪，xml 和 mapper 结构体里面的内容会在下面的案例中一步一步的添加进去。
-
-## Insert
-### Insert 插入数据
-对学生表进行新增数据,我们先从定义 mapper 函数开始。
-```go
-type StudentMapper struct {
-	InsertOne func(any) (int, error)
-}
-```
-开始定义 xml 元素，insert 中的模板参数，均来自于 mapper 函数的上下文参数中
 ```xml
 <?xml version="1.0" encoding="ISO-8859-1"?>
-<!DOCTYPE mapper>
-
 <mapper namespace="StudentMapper">
-    <insert id="InsertOne">
-        insert into student(id,name,age,create_time) value({id},{name},{age},{time})
+    <insert id="AddOne">
+       insert into student (name, age, create_time)
+       values ({name},{age},{createtime});
     </insert>
-</mapper>
-```
-创建 gobatis 并调用执行
-```go
-package main
-
-import (
-	"database/sql"
-	"fmt"
-	"gitee.com/aurora-engine/gobatis"
-	_ "github.com/go-sql-driver/mysql"
-	"time"
-)
-type Student struct {
-	Id         string `column:"id"`
-	Name       string `column:"name"`
-	Age        int    `column:"age"`
-	CreateTime string `column:"create_time"`
-}
-
-type StudentMapper struct {
-	InsertOne func(any) (int64, error)
-}
-
-func main() {
-	ctx := map[string]any{
-		"id":   "1",
-		"name": "test1",
-		"age":  19,
-		"time": time.Now().Format("2006-01-02 15:04:05"),
-	}
-	open, err := sql.Open("mysql", "xxxx")
-	if err != nil {
-		fmt.Println(err.Error())
-		return
-	}
-	if err != nil {
-		return
-	}
-	build := gobatis.New(open)
-	build.Source("/")
-	mapper := &StudentMapper{}
-	build.ScanMappers(mapper)
-	count, err := mapper.InsertOne(ctx)
-	if err != nil {
-		fmt.Println(err.Error())
-		return
-	}
-	fmt.Println(count)
-}
-```
-### 批量插入数据
-我们现在继续向 Mapper 结构体中添加定义
-```go
-type StudentMapper struct {
-	InsertOne func(any) (int64, error)
-	InsertArr func(any) (int64, error)
-}
-```
-我们添加了 `InsertArr func(any) (int64, error)` 字段定义，在xml里面我们编写对应的sql语句,`<insert>`.
-```xml
-<mapper namespace="StudentMapper">
-    <insert id="InsertOne">
-        insert into student(id,name,age,create_time) value({id},{name},{age},{time})
-    </insert>
-
-    <insert id="InsertArr">
-        insert into student(id,name,age,create_time) values
-        <for slice="{arr}" item="obj">
-            ({obj.id},{obj.name},{obj.age},{obj.time})
+    <insert id="Adds">
+        insert into student (name, age, create_time) values
+        <for slice="{arr}" item="stu">
+            ({stu.name},{stu.age},{stu.createtime})
         </for>
     </insert>
 
+    <select id="QueryAll">
+        select * from student
+    </select>
 </mapper>
 ```
-`arr` 是上下文中的属性，`obj` 是作为 for 标签内的上下文数据，for 内是无法使用全局赏析问数据的。编写代码执行批量插入。
+
+#### 执行
 ```go
-package main
-
-import (
-	"database/sql"
-	"fmt"
-	"gitee.com/aurora-engine/gobatis"
-	_ "github.com/go-sql-driver/mysql"
-	"time"
-)
-type Student struct {
-	Id         string `column:"id"`
-	Name       string `column:"name"`
-	Age        int    `column:"age"`
-	CreateTime string `column:"create_time"`
-}
-
-type StudentMapper struct {
-	InsertOne func(any) (int64, error)
-	InsertArr func(any) (int64, error)
-}
-
-func main() {
-	ctx := map[string]any{
-		"arr": []map[string]any{
-			{
-				"id":   "1",
-				"name": "test1",
-				"age":  19,
-				"time": time.Now().Format("2006-01-02 15:04:05"),
-			},
-			{
-				"id":   "2",
-				"name": "test2",
-				"age":  19,
-				"time": time.Now().Format("2006-01-02 15:04:05"),
-			},
-			{
-				"id":   "3",
-				"name": "test3",
-				"age":  19,
-				"time": time.Now().Format("2006-01-02 15:04:05"),
-			},
-		},
-	}
-	open, err := sql.Open("mysql", "xxxxx")
-	if err != nil {
-		fmt.Println(err.Error())
+func TestQueryAll(t *testing.T) {
+	var stus []model.Student
+	var err error
+	if stus, err = studentMapper.QueryAll(); err != nil {
+		t.Error(err.Error())
 		return
 	}
-	build := gobatis.New(open)
-	build.Source("/")
-	mapper := &StudentMapper{}
-	build.ScanMappers(mapper)
-	count, err := mapper.InsertArr(ctx)
-	if err != nil {
-		fmt.Println(err.Error())
-		return
-	}
-	fmt.Println(count)
+	t.Log(stus)
 }
 ```
-::: tip
-Insert,Update,Delete，定义的返回值只能返回数据库处理记录，第一个参数返回类型不正确将会返回错误信息，Insert 相对特殊，第二个参数可以返回，自增长id。 
-:::
 
-## Select
-### 查询一条记录
-添加 查询定义如下：
+#### 分页查询
+添加分页 mapper 字段 `QueryPage`，作为测试我们不进行参数传递，它返回3个参数，第一个参数是分页数据，第二个参数，是`sql`条件所统计的总数，
+查询mapper不返回 `int64` 的参数就不会自动统计数量
 ```go
 type StudentMapper struct {
-	InsertOne func(any) (int64, error)
-	InsertArr func(any) (int64, error)
+	AddOne   func(student model.Student) error
+	InsertId func(student model.Student) (int64, int64, error)
+	Adds     func(ctx any) error
 
-	SelectById func(any) (Student, error)
+	QueryAll  func() ([]model.Student, error)
+	QueryPage func() ([]model.Student, int64, error)
 }
 ```
 ```xml
-<select id="SelectById">
-        select * from student where id={id}
-</select>
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<mapper namespace="StudentMapper">
+    <insert id="AddOne">
+       insert into student (name, age, create_time)
+       values ({name},{age},{createtime});
+    </insert>
+    <insert id="InsertId">
+        insert into student (name, age, create_time)
+        values ({name},{age},{createtime});
+    </insert>
+    <insert id="Adds">
+        insert into student (name, age, create_time) values
+        <for slice="{arr}" item="stu">
+            ({stu.name},{stu.age},{stu.createtime})
+        </for>
+    </insert>
+
+    <select id="QueryAll">
+        select * from student
+    </select>
+
+    <select id="QueryPage">
+        select * from student limit 2 offset 0
+    </select>
+</mapper>
 ```
+#### 执行
 ```go
-package main
-
-import (
-	"database/sql"
-	"fmt"
-	"gitee.com/aurora-engine/gobatis"
-	_ "github.com/go-sql-driver/mysql"
-	"time"
-)
-
-type Student struct {
-	Id         string `column:"id"`
-	Name       string `column:"name"`
-	Age        int    `column:"age"`
-	CreateTime string `column:"create_time"`
-}
-
-type StudentMapper struct {
-	InsertOne func(any) (int64, error)
-	InsertArr func(any) (int64, error)
-
-	SelectById  func(any) (Student, error)
-}
-
-func main() {
-	ctx := map[string]any{
-		"arr": []map[string]any{
-			{
-				"id":   "1",
-				"name": "test1",
-				"age":  19,
-				"time": time.Now().Format("2006-01-02 15:04:05"),
-			},
-			{
-				"id":   "2",
-				"name": "test2",
-				"age":  19,
-				"time": time.Now().Format("2006-01-02 15:04:05"),
-			},
-			{
-				"id":   "3",
-				"name": "test3",
-				"age":  19,
-				"time": time.Now().Format("2006-01-02 15:04:05"),
-			},
-		},
-		"id":  "1",
-		"ids": []string{"1", "2"},
-	}
-	open, err := sql.Open("mysql", "xxxx")
-	if err != nil {
-		fmt.Println(err.Error())
+func TestQueryPage(t *testing.T) {
+	var stus []model.Student
+	var count int64
+	var err error
+	if stus, count, err = studentMapper.QueryPage(); err != nil {
+		t.Error(err.Error())
 		return
 	}
-	build := gobatis.New(open)
-	build.Source("/")
-	mapper := &StudentMapper{}
-	build.ScanMappers(mapper)
-	stu, err := mapper.SelectById(ctx)
-	if err != nil {
-		fmt.Println(err.Error())
-		return
-	}
-	fmt.Println(stu)
-}
-
-```
-
-### 查询多条数据
-```go
-type StudentMapper struct {
-	InsertOne func(any) (int64, error)
-	InsertArr func(any) (int64, error)
-
-	SelectById func(any) (Student, error)
-	SelectAll   func() ([]Student, error)
-}
-```
-```xml
-<select id="SelectAll">
-    select * from student
-</select>
-```
-```go
-package main
-
-import (
-	"database/sql"
-	"fmt"
-	"gitee.com/aurora-engine/gobatis"
-	_ "github.com/go-sql-driver/mysql"
-	"time"
-)
-type Student struct {
-	Id         string `column:"id"`
-	Name       string `column:"name"`
-	Age        int    `column:"age"`
-	CreateTime string `column:"create_time"`
-}
-
-type StudentMapper struct {
-	InsertOne func(any) (int64, error)
-	InsertArr func(any) (int64, error)
-
-	SelectById  func(any) (Student, error)
-	SelectAll   func() ([]Student, error)
-}
-
-func main() {
-	open, err := sql.Open("mysql", "xxxx")
-	if err != nil {
-		fmt.Println(err.Error())
-		return
-	}
-	build := gobatis.New(open)
-	build.Source("/")
-	mapper := &StudentMapper{}
-	build.ScanMappers(mapper)
-	stu, err := mapper.SelectAll()
-	if err != nil {
-		fmt.Println(err.Error())
-		return
-	}
-	fmt.Println(stu)
-}
-
-```
-
-### 批量查询
-```go
-type StudentMapper struct {
-	InsertOne func(any) (int64, error)
-	InsertArr func(any) (int64, error)
-
-	SelectById func(any) (Student, error)
-	SelectAll   func() ([]Student, error)
-	SelectByIds func(any) ([]Student, error)
-}
-```
-```xml
-<select id="SelectByIds">
-    select * from student where id in
-    <for slice="{ids}" item="id" open="(" separator="," close=")">
-        {id}
-    </for>
-</select>
-```
-```go
-package main
-
-import (
-	"database/sql"
-	"fmt"
-	"gitee.com/aurora-engine/gobatis"
-	_ "github.com/go-sql-driver/mysql"
-	"time"
-)
-type Student struct {
-	Id         string `column:"id"`
-	Name       string `column:"name"`
-	Age        int    `column:"age"`
-	CreateTime string `column:"create_time"`
-}
-
-type StudentMapper struct {
-	InsertOne func(any) (int64, error)
-	InsertArr func(any) (int64, error)
-
-	SelectById  func(any) (Student, error)
-	SelectAll   func() ([]Student, error)
-	SelectByIds func(any) ([]Student, error)
-}
-
-func main() {
-	ctx := map[string]any{
-		"arr": []map[string]any{
-			{
-				"id":   "1",
-				"name": "test1",
-				"age":  19,
-				"time": time.Now().Format("2006-01-02 15:04:05"),
-			},
-			{
-				"id":   "2",
-				"name": "test2",
-				"age":  19,
-				"time": time.Now().Format("2006-01-02 15:04:05"),
-			},
-			{
-				"id":   "3",
-				"name": "test3",
-				"age":  19,
-				"time": time.Now().Format("2006-01-02 15:04:05"),
-			},
-		},
-		"id":  "1",
-		"ids": []string{"1", "2"},
-	}
-	open, err := sql.Open("mysql", "xxxxxxx")
-	if err != nil {
-		fmt.Println(err.Error())
-		return
-	}
-	build := gobatis.New(open)
-	build.Source("/")
-	mapper := &StudentMapper{}
-	build.ScanMappers(mapper)
-	stu, err := mapper.SelectByIds(ctx)
-	if err != nil {
-		fmt.Println(err.Error())
-		return
-	}
-	fmt.Println(stu)
+	t.Log("rows:", stus, "count:", count)
 }
 ```
 
-## Update 
-同上...
-
-## Delete
-同上...
 
 ## 自定义映射数据
 `SGO` 提供了上下文参数中复杂数据类型如何解析对应到 SQL 中对应的参数以及 SQL 中的查询结果集如何映射到自定义的复杂数据类型中。
@@ -621,7 +379,6 @@ func TimeDataPointer(value reflect.Value, data any) error {
 	if value.CanSet() {
 		value.Set(reflect.ValueOf(&parse))
 	}
-
 	return nil
 }
 ```
