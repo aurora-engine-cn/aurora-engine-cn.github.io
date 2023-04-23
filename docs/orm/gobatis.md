@@ -88,7 +88,7 @@ func init() {
 }
 ```
 
-### 实现 数据库插入数据
+## 数据插入数据
 #### 添加 mapper 方法
 此时你的 `mapper` 应该是下面的样子
 ```go
@@ -104,11 +104,10 @@ type StudentMapper struct {
 <mapper namespace="StudentMapper">
     <insert id="AddOne">
         insert into student (name, age, create_time)
-        values ({name},{age},{createtime});
+        values ({Name},{Age},{CreateTime});
     </insert>
 </mapper>
 ```
-
 #### 调用执行插入数据
  下面通过测试对刚刚定义的插入方法进行执行，所有的前置步骤都在上面的初始化中准备好了，直接调用 `AddOne` 字段即可实现数据插入
 ```go
@@ -125,7 +124,7 @@ func TestInsert(t *testing.T) {
 }
 ```
 
-#### 获取 执行影响行数 和 自增长主键
+## 执行行数 和 自增主键
 定义mapper字段 `InsertId`,它有3个返回值，第一个返回值是执行sql返回的影响行数，第二个返回值是返回自增长逐渐值，
 默认第一个参数是返回影响行数。
 ```go
@@ -140,11 +139,11 @@ type StudentMapper struct {
 <mapper namespace="StudentMapper">
     <insert id="AddOne">
         insert into student (name, age, create_time)
-        values ({name},{age},{createtime});
+        values ({Name},{Age},{CreateTime});
     </insert>
     <insert id="InsertId">
         insert into student (name, age, create_time)
-        values ({name},{age},{createtime});
+        values ({Name},{Age},{CreateTime});
     </insert>
 </mapper>
 ```
@@ -168,7 +167,7 @@ func TestInsertId(t *testing.T) {
 ```
 
 
-#### 实现批量插入
+## 实现批量插入
 添加新的方法，此时你的 `mapper` 应该是下面的样子
 ```go
 type StudentMapper struct {
@@ -185,12 +184,16 @@ type StudentMapper struct {
 <mapper namespace="StudentMapper">
     <insert id="AddOne">
         insert into student (name, age, create_time)
-        values ({name},{age},{createtime});
+        values ({Name},{Age},{CreateTime});
+    </insert>
+    <insert id="InsertId">
+        insert into student (name, age, create_time)
+        values ({Name},{Age},{CreateTime});
     </insert>
     <insert id="Adds">
         insert into student (name, age, create_time) values
         <for slice="{arr}" item="stu">
-            ({stu.name},{stu.age},{stu.createtime})
+            ({stu.Name},{stu.Age},{stu.CreateTime})
         </for>
     </insert>
 </mapper>
@@ -219,7 +222,7 @@ func TestSliceInsert(t *testing.T) {
 }
 ```
 
-### 数据查询
+## 数据查询
 #### 定义查询 
 定义了mapper字段 `QueryAll` 查询全部采用对应的切片模型进行接收即可，查询多条数据结果集的时候任然可以使用单个模型接收，
 只是单个模型的数据仅仅取到结果集的第一条数据。
@@ -236,13 +239,17 @@ type StudentMapper struct {
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <mapper namespace="StudentMapper">
     <insert id="AddOne">
-       insert into student (name, age, create_time)
-       values ({name},{age},{createtime});
+        insert into student (name, age, create_time)
+        values ({Name},{Age},{CreateTime});
+    </insert>
+    <insert id="InsertId">
+        insert into student (name, age, create_time)
+        values ({Name},{Age},{CreateTime});
     </insert>
     <insert id="Adds">
         insert into student (name, age, create_time) values
         <for slice="{arr}" item="stu">
-            ({stu.name},{stu.age},{stu.createtime})
+            ({stu.Name},{stu.Age},{stu.CreateTime})
         </for>
     </insert>
 
@@ -265,7 +272,7 @@ func TestQueryAll(t *testing.T) {
 }
 ```
 
-#### 分页查询
+## 分页查询
 添加分页 mapper 字段 `QueryPage`，作为测试我们不进行参数传递，它返回3个参数，第一个参数是分页数据，第二个参数，是`sql`条件所统计的总数，
 查询mapper不返回 `int64` 的参数就不会自动统计数量
 ```go
@@ -283,16 +290,16 @@ type StudentMapper struct {
 <mapper namespace="StudentMapper">
     <insert id="AddOne">
        insert into student (name, age, create_time)
-       values ({name},{age},{createtime});
+       values ({Name},{Age},{CreateTime});
     </insert>
     <insert id="InsertId">
         insert into student (name, age, create_time)
-        values ({name},{age},{createtime});
+        values ({Name},{Age},{CreateTime});
     </insert>
     <insert id="Adds">
         insert into student (name, age, create_time) values
         <for slice="{arr}" item="stu">
-            ({stu.name},{stu.age},{stu.createtime})
+            ({stu.Name},{stu.Age},{stu.CreateTime})
         </for>
     </insert>
 
