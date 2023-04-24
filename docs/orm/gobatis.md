@@ -74,11 +74,13 @@ type StudentMapper struct {
 
 #### 初始化 gobatis
 ```go
+var err error
+var open *sql.DB
 var studentMapper *StudentMapper
 
 func init() {
 	studentMapper = &StudentMapper{}
-	open, err := sql.Open("mysql", "root:Aurora@2022@tcp(localhost:3306)/demo?charset=utf8&parseTime=True&loc=Local")
+	open, err = sql.Open("mysql", "root:Aurora@2022@tcp(82.157.160.117:3306)/community?charset=utf8&parseTime=True&loc=Local")
 	if err != nil {
 		return
 	}
@@ -117,7 +119,7 @@ func TestInsert(t *testing.T) {
 		Age:        1,
 		CreateTime: time.Now().Format("2006-01-02 15:04:05"),
 	}
-	if err := studentMapper.AddOne(s); err != nil {
+	if err = studentMapper.AddOne(s); err != nil {
 		t.Error(err.Error())
 		return
 	}
@@ -151,8 +153,7 @@ type StudentMapper struct {
 ```go
 func TestInsertId(t *testing.T) {
 	var count, id int64
-	var err error
-	s := model.Student{
+	s = model.Student{
 		Name:       "test",
 		Age:        2,
 		CreateTime: time.Now().Format("2006-01-02 15:04:05"),
@@ -210,7 +211,7 @@ func TestSliceInsert(t *testing.T) {
 		}
 		arr = append(arr, s)
 	}
-	err := studentMapper.Adds(
+	err = studentMapper.Adds(
 		map[string]any{
 			"arr": arr,
 		},
@@ -263,7 +264,6 @@ type StudentMapper struct {
 ```go
 func TestQueryAll(t *testing.T) {
 	var stus []model.Student
-	var err error
 	if stus, err = studentMapper.QueryAll(); err != nil {
 		t.Error(err.Error())
 		return
@@ -317,7 +317,6 @@ type StudentMapper struct {
 func TestQueryPage(t *testing.T) {
 	var stus []model.Student
 	var count int64
-	var err error
 	if stus, count, err = studentMapper.QueryPage(); err != nil {
 		t.Error(err.Error())
 		return
@@ -326,10 +325,59 @@ func TestQueryPage(t *testing.T) {
 }
 ```
 
+## 事务支持
+定义一个数据修改操作，通过外部传递一个事务 `tx` 由它来完成数据库操作后的提交或是回滚，我们定义一个 `Update` 第二个参数传递事务
+```go
+type StudentMapper struct {
+	AddOne   func(student model.Student) error
+	InsertId func(student model.Student) (int64, int64, error)
+	Adds     func(ctx any) error
+
+	QueryAll  func() ([]model.Student, error)
+	QueryPage func() ([]model.Student, int64, error)
+
+	Update func(student model.Student, tx *sql.Tx) (int64, error)
+}
+```
+编写sql语句，修改年龄大于5的数据姓名修改为AAA
+```xml
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<mapper namespace="StudentMapper">
+    <!--  略 ..  -->
+    <update id="Update">
+        update student set name={Name} where age>{Age}
+    </update>
+</mapper>
+```
+
+#### 运行测试
+```go
+func TestUpdate(t *testing.T) {
+	var begin *sql.Tx
+	var count int64
+	begin, err = open.Begin()
+	if err != nil {
+		t.Error(err.Error())
+		return
+	}
+	u := model.Student{
+		Name: "AAA",
+		Age:  5,
+	}
+	count, err = studentMapper.Update(u, begin)
+	if err != nil {
+		t.Error(err.Error())
+		return
+	}
+	begin.Commit()
+	t.Log(count)
+}
+
+```
 
 ## 自定义映射数据
-`SGO` 提供了上下文参数中复杂数据类型如何解析对应到 SQL 中对应的参数以及 SQL 中的查询结果集如何映射到自定义的复杂数据类型中。
-### Go参数解析到SQL
+`GoBatis` 提供了上下文参数中复杂数据类型如何解析对应到 SQL 中对应的参数以及 SQL 中的查询结果集如何映射到自定义的复杂数据类型中。
+### Go参数解析到 SQL
 ```go
 // ToDatabase mapper 中sql解析模板对应的复杂数据据类型解析器
 // data : 对应的数据本身
@@ -339,7 +387,7 @@ type ToDatabase func(data any) (any, error)
 // DatabaseType 对外提供添加 自定义sql语句数据类型解析支持
 func DatabaseType(key string, dataType ToDatabase) 
 ```
-需要注册一个 `ToDatabase` 的解析器，`SGO`中对时间类型做了内置支持如下
+需要注册一个 `ToDatabase` 的解析器，`GoBatis`中对时间类型做了内置支持如下
 ```go
 func ToDatabaseTime(data any) (any, error) {
 	t := data.(time.Time)
@@ -364,7 +412,7 @@ type ToGolang func(value reflect.Value, data any) error
 // dataType 需要提供 对应数据解析逻辑细节可以参考 TimeData 或者 TimeDataPointer
 func GolangType(key string, dataType ToGolang)
 ```
-需要注册一个 `ToGolang` 的解析器，`SGO`中对时间类型做了内置支持如下
+需要注册一个 `ToGolang` 的解析器，`GoBatis`中对时间类型做了内置支持如下
 ```go
 // TimeData 时间类型数据
 func TimeData(value reflect.Value, data any) error {
