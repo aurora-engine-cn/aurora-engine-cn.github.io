@@ -1,1 +1,0 @@
-import{_ as s,c as n,o as a,N as l}from"./chunks/framework.0799945b.js";const A=JSON.parse('{"title":"GoBatis","description":"","frontmatter":{},"headers":[],"relativePath":"orm/gobatis.md"}'),p={name:"orm/gobatis.md"},e=l("",76),o=[e];function t(r,c,D,F,y,i){return a(),n("div",null,o)}const u=s(p,[["render",t]]);export{A as __pageData,u as default};
