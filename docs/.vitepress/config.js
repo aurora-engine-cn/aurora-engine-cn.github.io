@@ -6,6 +6,9 @@ export default {
         lineNumbers: true,
     },
     themeConfig: {
+        search: {
+            provider: 'local'
+        },
         siteTitle: false,
         logo: 'https://img-1252940994.cos.ap-nanjing.myqcloud.com/logo.png',
         socialLinks: [
@@ -94,5 +97,4 @@ export default {
             },
         ]
     },
-
 }
