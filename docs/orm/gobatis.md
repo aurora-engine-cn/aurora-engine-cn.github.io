@@ -2,6 +2,11 @@
 
 `GoBatis` 是参考 `MyBatis` 编写的sql标签解析，`GoBatis`仅提供对 sql 的上下文数据解析填充，并不保证对 sql 语句的语法检查。
 
+## Go 版本
+```text
+go1.20
+```
+
 ## XML 解析规则
 
 `gobatis` 解析 xml 文件中的sql语句，会严格检查上下文中的数据类型，字符串类型参数会自定添加 ` '' `
@@ -102,7 +107,7 @@ var studentMapper *StudentMapper
 
 func init() {
 	studentMapper = &StudentMapper{}
-	open, err = sql.Open("mysql", "root:Aurora@2022@tcp(82.157.160.117:3306)/community?charset=utf8&parseTime=True&loc=Local")
+	open, err = sql.Open("mysql", "xxx:xx@xx@tcp(localhost:3306)/test?charset=utf8&parseTime=True&loc=Local")
 	if err != nil {
 		return
 	}
