@@ -30,7 +30,7 @@ export default {
                 ],
             },
             {
-                text:"v1.3.16.3",
+                text:"v1.3.17",
                 link: 'https://gitee.com/aurora-engine/aurora'
             },
 
@@ -52,13 +52,6 @@ export default {
                 items: [
                     { text: '路由解析', link: '/router/args' },
                     { text: '数据响应', link: '/router/response'},
-                ]
-            },
-            {
-                text: '中间件',
-                collapsible: true,
-                items: [
-                    { text: '跨域', link: '/middlewares/cors' },
                 ]
             },
             {
@@ -84,7 +77,6 @@ export default {
                 collapsible: true,
                 items: [
                     { text: '依赖管理', link: '/component/dep' },
-                    { text: '容器生命周期', link: '/component/ioc' },
                     { text: '结构体接口', link: '/component/controller' },
                 ]
             },

@@ -3,7 +3,7 @@
 [静态资源](/static/static)
 
 ## 配置实例
-`aurora` 的配置处理采用的 `viper` 实现，仅支持 yml 格式的读取， 自带的 `ConfigCenter` 配置中心实现对 `viper` 的分装，提供了并发读写安全的操作。
+`aurora` 的配置处理采用的 `viper` 实现，仅支持 yml 格式的读取， 自带的 `ConfigCenter` 配置中心实现对 `viper` 的封装，提供了并发读写安全的操作。
 ### 默认配置文件
 `aurora` 会加载项目跟目录下的`application.yml`配置文件，存在多个同名的配置文件加载顺序会优先查找最外层的配置。
 ### 读取配置文件

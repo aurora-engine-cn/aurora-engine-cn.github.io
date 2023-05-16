@@ -122,35 +122,61 @@ server.Post("/upload", func(data any, file *web.MultipartFile) {
 ```
 
 ## Group 
-通过调用 `Group(url string, middleware ...Middleware)` 方法来进行接口分组，在分组中使用中间件和全局使用中间件是隔离开的，分组会触发全局中间件到每个用分组创建的接口中。
+通过调用 `Group(url string, interceptor ...web.Interceptor)` 方法来进行接口分组，在分组中使用中间件和全局使用中间件是隔离开的，分组会触发全局中间件到每个用分组创建的接口中。
 `Group` 的 `Use()` 方法仅仅用于当前分组的全局中间件
 ```go
-func (a *Aurora) Group(url string, middleware ...web.Middleware) *Group
-func (g *Group) Group(url string, middleware ...web.Middleware) *Group
+func (a *Aurora) Group(url string, interceptor ...web.Interceptor) *Group
+func (g *Group) Group(url string, interceptor ...web.Interceptor) *Group
 ```
 
 
-## Middleware
-中间件是一个固定的函数签名，日后也许会有所调整，函数通过返回一个 `bool` 来判断是否执行下一个中间件。
+## 拦截器
+中间件的功能在`v1.3.17`中和拦截器进行合并。需要实现 `web.Interceptor`接口。和中间件参数相差不大，多了一个参数 `handler` 记录了
+处理器的基础信息。
 ```go
-type Middleware func(Context) bool
-```
-### 定义中间件
-```go
-func Before() web.Middleware {
-	return func(ctx web.Context) bool {
-		fmt.Println("before")
-		return true
-	}
+type Interceptor interface {
+    // 处理器执行之前 执行Before，Before执行返回true，err为空将会放行执行处理器或者下一个拦截器
+	Before(ctx Context, handler any) (bool, error)
+	// 处理器执行完毕后调用 Complete 
+	Complete(ctx Context, handler any) error
+	// 响应结果写入给客户端之后调用 After
+	After(ctx Context, handler any) error
 }
 ```
-### 全局中间件
-直接调用 `Use(Before())` 方法即可,任何接口执行之前都会被 `Before` 中间件优先处理。
+### 全局拦截器
+直接调用 `Engine.Interceptors(Before{})` (Before{}是一个实现 `web.Interceptor`的结构体)方法即可,任何接口执行之前都会被 `Before` 拦截器优先处理。
+
+### 分组拦截器
+和全局的注册方式一致 `Group.Interceptors(...)` 方法即可
 
 ### 局部中间件
-在注册函数的最后一个参数是一个可变参数，能给一个接口配置多个中间件
+在注册函数的最后一个参数是一个可变参数，能给一个接口配置多个拦截器 (Before{}是一个实现 `web.Interceptor`的结构体)
 ```go
-a.Get("/", func() {}, Before())
+a.Get("/", func() {}, Before{})
 ```
-### 中间件处理中断
-某个中间件如果逻辑处理失败，我们需要正常的对客户端做出响应，通过 `web.Context` 的 `func (c Context) Return(value ...any)` 来完成。
+### 拦截器处理中断
+某个拦截器如果逻辑处理失败，我们需要正常的对客户端做出响应，通过 `web.Context` 的 `func (c Context) Return(value ...any)` 来完成。
+::: danger
+注意 : 中断处理应该在Before中使用，在After中使用中断处理并没有任何效果
+:::
+
+## 跨域
+`aurora`提供一个默认的跨域处理工具，开发者也可以自定义，自定义跨域只需要一个函数即可。通过函数返回一个 `bool`值来处理跨域检测。
+```go
+type CorsHandle func(r *http.Request, w http.ResponseWriter) bool
+```
+默认提供的跨域处理使用例子:
+```go
+func Cors() web.CorsHandle {
+	corsOpt := web.NewDefaultCors()
+	corsOpt.Domain(http.MethodPost, "/*")
+	corsOpt.Domain(http.MethodGet, "/*")
+	corsOpt.Domain(http.MethodDelete, "/*")
+	corsOpt.Domain(http.MethodPut, "/*")
+	return corsOpt.Handle()
+}
+```
+应用配置
+```go
+Engine.Use(Cors())
+```

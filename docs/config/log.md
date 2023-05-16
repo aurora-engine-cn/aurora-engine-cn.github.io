@@ -10,8 +10,3 @@ type Log interface {
 	Warn(...interface{})
 }
 ```
-使用自定义的 `logrus`
-```go
-a.Use(logrus.New())
-aurora.Run(a)
-```
