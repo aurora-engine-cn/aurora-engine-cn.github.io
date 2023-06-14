@@ -30,7 +30,7 @@ export default {
                 ],
             },
             {
-                text:"v1.3.17",
+                text:"v1.3.18",
                 link: 'https://gitee.com/aurora-engine/aurora'
             },
 

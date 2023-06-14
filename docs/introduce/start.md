@@ -7,7 +7,7 @@
 
 ## Go 版本
 ```text
-go1.20
+go1.20.4
 ```
 
 ## 导入依赖
@@ -47,7 +47,7 @@ func (server *Server) Router() {
 ### 第三步 启动服务器
 ```go
 func main(){
-    err := aurora.Run(&Server{aurora.New(aurora.Debug())})
+    err := aurora.Run(&Server{aurora.New()})
     if err != nil {
         panic(err)
     }
