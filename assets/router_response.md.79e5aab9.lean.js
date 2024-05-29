@@ -1,1 +1,0 @@
-import{_ as a,c as e,o,N as r}from"./chunks/framework.0799945b.js";const u=JSON.parse('{"title":"数据响应","description":"","frontmatter":{},"headers":[],"relativePath":"router/response.md"}'),t={name:"router/response.md"},c=r("",12),d=[c];function n(s,h,l,i,p,_){return o(),e("div",null,d)}const f=a(t,[["render",n]]);export{u as __pageData,f as default};
